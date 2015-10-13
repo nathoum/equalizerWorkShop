@@ -118,19 +118,44 @@ window.requestAnimFrame = (function () {
 		scene.add( groupobject );//when done, add the group to the scene
 		//*********************
 
+		//test :
+		//lineleft.scale = (0.5, 0.5, 0.5);
+
+		/*ar dir = new THREE.Vector3( 1, 0, 0 );
+		var origin = new THREE.Vector3( 0, 0, 0 );
+		var length = 1;
+		var hex = 0xffff00;
+
+		var arrowHelper = new THREE.ArrowHelper( dir, origin, length, hex );
+		arrowHelper.position.x = 200;
+		scene.add( arrowHelper );*/
 
 
 
+	   //var tick = 0.01;
+	    var tickaverageval = 0.01;
 	 
 	animate();
 	function animate() {
 
 	    requestAnimationFrame(animate);
-
 	    //var averageval = Math.max((average2/1000)*2,0.01);
+	    
+
 
 	    var averageval = (average2/1000);
 	    var average1val = (average/1000);
+
+	    //tick += 0.5;
+
+	    tickaverageval += (averageval*10); //nouvelle valeur incrémente au tick
+
+	    //Sin() pour faire effet bounce/vibration
+	    linebottom.position.x += Math.sin(tickaverageval) * 0.2
+	    lineleft.position.x += Math.sin(tickaverageval) * 0.2
+	    lineright.position.x += Math.sin(tickaverageval) * 0.2
+
+	    //linebottom.position.x += Math.sin(tick * averageval* 10) * 0.08
 
 	    //dot.rotation.x += 0.01
 	    dot.rotation.x += averageval
@@ -148,7 +173,15 @@ window.requestAnimFrame = (function () {
 
   		groupobject.rotation.z += 0.01
 
-  		//console.log(averageval);
+  		//console.log(average2);
+
+
+  		/*if(average2 >= 30) {
+  			L3.hex = 0x95a5a6;
+  			//L3.position.z = 100
+  		} else {
+  			//L3.position.z = 400
+  		}*/
 
 
 

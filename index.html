@@ -1,34 +1,21 @@
 <html>
 	<head>
 		<title>Molecule experiment</title>
+		<link href='https://fonts.googleapis.com/css?family=Asap' rel='stylesheet' type='text/css'>
+		<link href='https://fonts.googleapis.com/css?family=Orbitron' rel='stylesheet' type='text/css'>
 		<link rel="stylesheet" href="css/style.css">
-
-		<script id="cubeVertexShader" type="x-shader/x-vertex">
-		    uniform float time;
-		    varying vec2 vUv;
-		 
-		    void main() {
-		        vUv = uv;
-		        vec3 newPosition = position + normal * vec3(sin(time * 0.2) * 3.0);
-		        gl_Position = projectionMatrix <i> modelViewMatrix </i> vec4(newPosition, 1.0);
-
-		        vec2 position = -1.0 + 2.0 * vUv;
- 
-            float red = abs(sin(position.x * position.y + time / 5.0));
-            float green = abs(sin(position.x * position.y + time / 4.0));
-            float blue = abs(sin(position.x * position.y + time / 3.0 ));
-            gl_FragColor = vec4(red, green, blue, 1.0);
-		    }
-		</script>
 	</head>
 	<body>
 		<div class="container-end">
 			<a href="#" class="container-end-replay">Replay</a>
 		</div>
-		<div id="cubeFragmentShader"></div>
+		<div class="content-text">
+			<h1 class="content-text-title1">Meteorite or chemestry?</h1>
+		</div>
 		<script src="js/lib/three.min.js"></script>
 		<script src="js/lib/OrbitControls.js"></script>
 		<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+		<script src="js/lib/TweenMax.js"></script>
 		<!--<script type="text/javascript" src="Keyboard.js"></script>-->
 		<!--<script type="text/javascript" src="js/audio.js"></script>-->
 		<script type="text/javascript" src="js/script.js"></script>

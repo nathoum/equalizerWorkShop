@@ -29,11 +29,13 @@ window.requestAnimFrame = (function () {
 		spheres = [];
 		s = [];
 
+		tweens = [];
+
 		controls = new THREE.OrbitControls( camera );
 
 
 		/******************** BUBBLES METEOR ******************/
-		var colorbubbles = new THREE.MeshPhongMaterial({color: 0x2980b9, shading: THREE.FlatShading, fog: false } );
+		var colorbubbles = new THREE.MeshPhongMaterial({color: 0x2980b9, shading: THREE.FlatShading, fog: false, transparent: true } );
 
 		var groupparticles = new THREE.Object3D();
   		//console.log(groupparticles);
@@ -46,16 +48,25 @@ window.requestAnimFrame = (function () {
             mesh.rotation.y = Math.random() * 2 * Math.PI;
 
             mesh.scale.set(0.2,0.2,0.2);
-            mesh.opacity = 50;
 
             groupparticles.add( mesh );
   		 }
+
   		scene.add( groupparticles );
+  		console.log(groupparticles);
+
+  		for(var i in groupparticles.children) {
+  			groupparticles.children[i].material.opacity = 0;
+  		}
+
   		/******************** BUBBLES METEOR ******************/
 
 
 		/*** ATOME EFFET PHONG ***/
-		var golf = new THREE.MeshPhongMaterial({color: 0xffffff, shading: THREE.FlatShading, fog: false } ),
+		var golf = new THREE.MeshPhongMaterial({color: 0xffffff, shading: THREE.FlatShading, fog: false, transparent: true } )
+		var golfsmallleft = new THREE.MeshPhongMaterial({color: 0xffffff, shading: THREE.FlatShading, fog: false,  transparent: true  } )
+		var golfsmallright = new THREE.MeshPhongMaterial({color: 0xffffff, shading: THREE.FlatShading, fog: false,  transparent: true  } )
+		var golfsmallbottom = new THREE.MeshPhongMaterial({color: 0xffffff, shading: THREE.FlatShading, fog: false,  transparent: true  } )
 
 		//L1 = new THREE.PointLight(0xc0392b, 1);
 		L1 = new THREE.PointLight(0x16a085, 1);
@@ -73,39 +84,75 @@ window.requestAnimFrame = (function () {
 
 		var geometry = new THREE.Geometry();
 
+
+
 		var dot = new THREE.Mesh (new THREE.TetrahedronGeometry(10, 2), golf);
 		 scene.add(dot);
 
 		 dot.scale.set(2,2,2);
+		 /*dot.material.opacity = 0;
+		 dot.transparent = true;
+		 dot.material.needsUpdate = true;
+		 dot.geometry.verticesNeedUpdate = true;*/
+
+		 console.log(dot.material);
+		 		 
+
+		 dot.material.opacity = 0;
+		 dot.material.opacity.needsUpdate = true;
+
 		 /********************/
 
-		var cloneright = new THREE.Mesh(new THREE.TetrahedronGeometry(10, 2), golf);
+		var cloneright = new THREE.Mesh(new THREE.TetrahedronGeometry(10, 2), golfsmallright);
 		scene.add( cloneright );
 		cloneright.position.x += 50;
 		cloneright.position.y = 50;
 
 		//Clone left
-		var cloneleft = new THREE.Mesh(new THREE.TetrahedronGeometry(10, 2), golf);
+		var cloneleft = new THREE.Mesh(new THREE.TetrahedronGeometry(10, 2), golfsmallleft);
 		scene.add( cloneleft );
 		cloneleft.position.x += -50;
 		cloneleft.position.y = 50;
 
-		var clonebottom = new THREE.Mesh(new THREE.TetrahedronGeometry(10, 2), golf);
+		var clonebottom = new THREE.Mesh(new THREE.TetrahedronGeometry(10, 2), golfsmallbottom);
 		scene.add( clonebottom );
 		clonebottom.position.y = -60;
+
+		cloneright.material.opacity = 0;
+		cloneright.material.opacity.needsUpdate = true;
+
+		cloneleft.material.opacity = 0;
+		cloneleft.material.opacity.needsUpdate = true;
+
+		clonebottom.material.opacity = 0;
+		clonebottom.material.opacity.needsUpdate = true;
+
+
 
 
 		/****** segments *******/
 		//SEGMENT LEFT
-		var linematerial = new THREE.LineBasicMaterial({
-		color: 0xecf0f1
+		var linematerialleft = new THREE.LineBasicMaterial({
+		color: 0xecf0f1,
+		transparent: true
 		});
+
+		var linematerialright = new THREE.LineBasicMaterial({
+		color: 0xecf0f1,
+		transparent: true
+		});
+		var linematerialbottom = new THREE.LineBasicMaterial({
+		color: 0xecf0f1,
+		transparent: true
+		});
+
+
 
 		var linegeometry = new THREE.Geometry();
 		linegeometry.vertices.push(cloneleft.position, dot.position
 		);
 
-		var lineright = new THREE.Line( linegeometry, linematerial );
+		var lineright = new THREE.Line( linegeometry, linematerialright );
 		lineright.material.linewidth = 2;
 		scene.add( lineright );
 
@@ -115,7 +162,7 @@ window.requestAnimFrame = (function () {
 		lineleftgeometry.vertices.push(cloneright.position, dot.position
 		);
 
-		var lineleft = new THREE.Line( lineleftgeometry, linematerial );
+		var lineleft = new THREE.Line( lineleftgeometry, linematerialleft );
 		lineleft.material.linewidth = 2;
 		scene.add( lineleft );
 
@@ -124,9 +171,16 @@ window.requestAnimFrame = (function () {
 		linebottomgeometry.vertices.push(clonebottom.position, dot.position
 		);
 
-		var linebottom = new THREE.Line( linebottomgeometry, linematerial );
+		var linebottom = new THREE.Line( linebottomgeometry, linematerialbottom );
 		linebottom.material.linewidth = 2;
 		scene.add( linebottom );
+
+		lineleft.material.opacity = 0;
+		lineleft.material.opacity.needsUpdate = true;
+		lineright.material.opacity = 0;
+		lineright.material.opacity.needsUpdate = true;
+		linebottom.material.opacity = 0;
+		linebottom.material.opacity.needsUpdate = true;
 
 		//********************
 
@@ -178,31 +232,25 @@ window.requestAnimFrame = (function () {
   		groupparticles.rotation.x += 0.01
   		groupparticles.rotation.y += 0.01
 
-  		//console.log(groupparticles);
+  		//console.log(average);
 
   		if(average <= 40) {
-  			//console.log("petit");
-
-  			//groupparticles.color = 0xe74c3c;
-  			//groupparticles[0].material.color.setHex(Math.random() * 0xe74c3c)
 
   			for(var i in groupparticles.children) {
-	  			//console.log("particle");
 	  			groupparticles.children[i].material.color.setHex( 0x3498db)
 	  		}
 
   		} else {
-  			//console.log("grand");
-  			//groupparticles[0].material.color.setHex(Math.random() * 0x3498db)
 
   			for(var i in groupparticles.children) {
   				
-
   				groupparticles.children[i].material.color.setHex(0xe74c3c)
 
 	  		}
-	  		//groupparticles.color = 0x3498db;
   		}
+
+
+
 
 
 	    
@@ -300,7 +348,7 @@ window.requestAnimFrame = (function () {
     // load the sound
     setupAudioNodes();
     //loadSound("http://www.twin-dev.net/experiments/audio/breakingbad-song.mp3");
-    loadSound("./ressources/breakingbad-song.mp3");
+    //loadSound("./ressources/breakingbad-song.mp3");
 
     function setupAudioNodes() {
 
@@ -362,9 +410,6 @@ window.requestAnimFrame = (function () {
         sourceNode.start(0);
         sourceNode.onended = onEnded;
 
-        
-        //$(".container-end").fadeIn();
-        /*sourceNode.loop = true;*/
     }
 
     function onEnded() {
@@ -418,3 +463,75 @@ window.requestAnimFrame = (function () {
     	
     }
     replayExperiment();
+
+
+    /********************* ANIMATIONS **************/
+
+
+    //TweenLite.to($(".content-text-title1"), 1.5, {width:100, delay:0.5, onComplete:myFunction});
+
+    TweenLite.from($(".content-text-title1"), 1.0, {scaleX:0, scaleY:0, ease:Power3.easeOut, delay:1.5, onComplete:titleHasAppeared});
+	function titleHasAppeared() {
+		//TweenMax.to(dot.material, 0.5, { opacity: 1, onComplete:firstSmallMeteor});
+		TweenMax.to(dot.material, 0.5, { opacity: 1, onComplete:firstSmallMeteor});
+	
+	}
+
+	function firstSmallMeteor() {
+
+		TweenMax.to(cloneleft.material, 0.5, { opacity: 1, onComplete:secondSmallMeteor});
+
+	}
+
+	function secondSmallMeteor() {
+
+		TweenMax.to(cloneright.material, 0.5, { opacity: 1, onComplete:thirdSmallMeteor});
+
+	}
+
+	function thirdSmallMeteor() {
+
+		TweenMax.to(clonebottom.material, 0.5, { opacity: 1, onComplete:firstLine});
+
+	}
+
+	function firstLine() {
+
+		TweenMax.to(lineleft.material, 0.5, { opacity: 1, onComplete:secondLine});
+
+	}
+
+	function secondLine() {
+
+		TweenMax.to(lineright.material, 0.5, { opacity: 1, onComplete:thirdLine});
+		loadSound("./ressources/breakingbad-song.mp3");
+
+	}
+
+	function thirdLine() {
+
+		TweenMax.to(linebottom.material, 0.5, { opacity: 1, onComplete:displayparticules});
+		//loadSound("./ressources/breakingbad-song.mp3");
+
+	}
+
+	function displayparticules() {
+
+		for(var i in groupparticles.children) {
+  			TweenMax.to(groupparticles.children[i].material, 0.5, { opacity: 1});
+  		}
+
+		/*for(var i in groupparticles.children) {
+			TweenMax.to(groupparticles[i].material, 0.5, { opacity: 1, onComplete:startMusic});
+		}*/
+
+		
+		// load the sound
+	    //setupAudioNodes();
+	    //loadSound("http://www.twin-dev.net/experiments/audio/breakingbad-song.mp3");
+	    //loadSound("./ressources/breakingbad-song.mp3");
+	}
+
+
+
+

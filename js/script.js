@@ -62,6 +62,9 @@ window.requestAnimFrame = (function () {
   		/******************** BUBBLES METEOR ******************/
 
 
+
+
+
 		/*** ATOME EFFET PHONG ***/
 		var golf = new THREE.MeshPhongMaterial({color: 0xffffff, shading: THREE.FlatShading, fog: false, transparent: true } )
 		var golfsmallleft = new THREE.MeshPhongMaterial({color: 0xffffff, shading: THREE.FlatShading, fog: false,  transparent: true  } )
@@ -199,6 +202,38 @@ window.requestAnimFrame = (function () {
 
 
 	    var tickaverageval = 0.01;
+
+	    dot.geometry.radius = 5;
+
+
+
+	    	/************* NOUVEAU SYSTEME DE PARTICULES **********/
+
+	    	/*var moleculesgroup = new THREE.Object3D();
+	    	for ( var i = 0; i < 10; i ++ ) {
+	    		var molecule = groupobject.clone();
+	    		molecule.scale.set(0.1,0.1,0.1);
+	    		molecule.position.set(Math.random() * 400 - 200,Math.random() * 400 - 200,Math.random() * 400 - 200);
+
+	    		molecule.rotation.set(Math.random() * 2 * Math.PI,Math.random() * 2 * Math.PI, 0);
+	    		
+	    		molecule.transparent = true;
+	    		//molecule.material.color.setHex( 0xe74c3c)
+
+
+
+	    		moleculesgroup.add(molecule);
+
+	    	}
+
+	    	console.log(moleculesgroup);
+	    	scene.add(moleculesgroup);
+	    	//moleculesgroup.material*/
+
+
+  		/**************** --------------------- **************/
+
+
 	 
 	animate();
 	function animate() {
@@ -212,9 +247,9 @@ window.requestAnimFrame = (function () {
 	    tickaverageval += (averageval*10); //nouvelle valeur incrémente au tick
 
 	    //Sin() pour faire effet bounce/vibration
-	    linebottom.position.x += Math.sin(tickaverageval) * 0.2
+	    /*linebottom.position.x += Math.sin(tickaverageval) * 0.2
 	    lineleft.position.x += Math.sin(tickaverageval) * 0.2
-	    lineright.position.x += Math.sin(tickaverageval) * 0.2
+	    lineright.position.x += Math.sin(tickaverageval) * 0.2*/
 
 	    dot.rotation.x += Math.max(averageval, 0.01)
 	    dot.rotation.y += Math.max(average1val, 0.01)
@@ -232,13 +267,23 @@ window.requestAnimFrame = (function () {
   		groupparticles.rotation.x += 0.01
   		groupparticles.rotation.y += 0.01
 
-  		//console.log(average);
+  		//moleculesgroup.rotation.x += 0.01
+  		//moleculesgroup.rotation.y += 0.01
+
+  		//moleculesgroup.scale.set(average/10,average/10,average/10);
+
+  		//moleculesgroup.position += average;
+
+
+
+  		console.log(average);
 
   		if(average <= 40) {
 
-  			for(var i in groupparticles.children) {
+  			for(var i in groupparticles.children) {	
 	  			groupparticles.children[i].material.color.setHex( 0x3498db)
 	  		}
+	  		//hideLines();
 
   		} else {
 
@@ -248,6 +293,26 @@ window.requestAnimFrame = (function () {
 
 	  		}
   		}
+
+  		if(average <= 60) {
+  			TweenMax.to(dot.scale, 0.5, { x:2.0, y:2.0, z:2.0, delay:5.0});
+
+
+  		} else {
+
+  			TweenMax.to(dot.scale, 0.5, { x:3.0, y:3.0, z:3.0, delay:5.0});
+  			
+  		}
+
+  		/*linebottom.position.x += Math.sin(tickaverageval) * 0.2
+	    lineleft.position.x += Math.sin(tickaverageval) * 0.2
+	    lineright.position.x += Math.sin(tickaverageval) * 0.2*/
+
+  		if(average >= 80) {
+  			hideLines();
+  		}
+
+
 
 
 
@@ -520,16 +585,24 @@ window.requestAnimFrame = (function () {
 		for(var i in groupparticles.children) {
   			TweenMax.to(groupparticles.children[i].material, 0.5, { opacity: 1});
   		}
+	}
 
-		/*for(var i in groupparticles.children) {
-			TweenMax.to(groupparticles[i].material, 0.5, { opacity: 1, onComplete:startMusic});
-		}*/
+	function hideLines() {
+		//delay: 5.0
+		console.log("change scale");
+		TweenMax.to(lineright.material, 0.5, { opacity: 0, ease:Bounce.easeOut, onComplete:showLines});
+		TweenMax.to(lineleft.material, 0.5, { opacity: 0, ease:Bounce.easeOut, onComplete:showLines});
+		TweenMax.to(linebottom.material, 0.5, { opacity: 0, ease:Bounce.easeOut, onComplete:showLines});
+		//TweenMax.to(dot.scale, 0.5, { x:0.5, y:0.5, z:0.5, delay:5.0});
+	}
 
-		
-		// load the sound
-	    //setupAudioNodes();
-	    //loadSound("http://www.twin-dev.net/experiments/audio/breakingbad-song.mp3");
-	    //loadSound("./ressources/breakingbad-song.mp3");
+	function showLines() {
+		//delay: 5.0
+		console.log("change scale");
+		TweenMax.to(lineright.material, 0.5, { opacity: 1, delay: 1.0, ease:Bounce.easeOut});
+		TweenMax.to(lineleft.material, 0.5, { opacity: 1, delay: 1.0, ease:Bounce.easeOut});
+		TweenMax.to(linebottom.material, 0.5, { opacity: 1, delay: 1.0, ease:Bounce.easeOut});
+		//TweenMax.to(dot.scale, 0.5, { x:0.5, y:0.5, z:0.5, delay:5.0});
 	}
 
 

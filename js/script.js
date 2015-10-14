@@ -1,8 +1,7 @@
 var average = 0.01;
 var average2 = 0.01;
 
-// var requirejs = require('requirejs');
-// var OrbitControls = require('three-orbit-controls')(THREE)
+
 
 window.requestAnimFrame = (function () {
 			    return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || function ( /* function */ callback, /* DOMElement */ element) {
@@ -31,13 +30,28 @@ window.requestAnimFrame = (function () {
 		s = [];
 
 		controls = new THREE.OrbitControls( camera );
-		//controls.addEventListener( 'change', renderer );
 
 
-		//controls.addEventListener( 'change', render );
-
-
+		/******************** BUBBLES METEOR ******************/
 		var colorbubbles = new THREE.MeshPhongMaterial({color: 0x2980b9, shading: THREE.FlatShading, fog: false } );
+
+		var groupparticles = new THREE.Object3D();
+  		//console.log(groupparticles);
+  		 for ( var i = 0; i < 120; i ++ ) {
+  		 	var mesh = new THREE.Mesh (new THREE.TetrahedronGeometry(10, 2), colorbubbles);
+  		 	mesh.position.x = Math.random() * 400 - 200;
+  		 	mesh.position.y = Math.random() * 400 - 200;
+  		 	mesh.position.z = Math.random() * 400 - 200;
+            mesh.rotation.x = Math.random() * 2 * Math.PI;
+            mesh.rotation.y = Math.random() * 2 * Math.PI;
+
+            mesh.scale.set(0.2,0.2,0.2);
+            mesh.opacity = 50;
+
+            groupparticles.add( mesh );
+  		 }
+  		scene.add( groupparticles );
+  		/******************** BUBBLES METEOR ******************/
 
 
 		/*** ATOME EFFET PHONG ***/
@@ -129,46 +143,17 @@ window.requestAnimFrame = (function () {
 		scene.add( groupobject );//when done, add the group to the scene
 		//*********************
 
-		var groupparticles = new THREE.Object3D();
-  		console.log(groupparticles);
-  		 for ( var i = 0; i < 120; i ++ ) {
-  		 	var mesh = new THREE.Mesh (new THREE.TetrahedronGeometry(10, 2), colorbubbles);
-  		 	mesh.position.x = Math.random() * 400 - 200;
-  		 	mesh.position.y = Math.random() * 400 - 200;
-  		 	mesh.position.z = Math.random() * 400 - 200;
-            mesh.rotation.x = Math.random() * 2 * Math.PI;
-            mesh.rotation.y = Math.random() * 2 * Math.PI;
 
-            mesh.scale.set(0.2,0.2,0.2);
-
-
-            mesh.opacity = 50;
-           // mesh.matrixAutoUpdate = false;
-            //mesh.updateMatrix();
-
-            groupparticles.add( mesh );
-  		 }
-  		 console.log(groupparticles);
-  		scene.add( groupparticles );
-
-
-	   //var tick = 0.01;
 	    var tickaverageval = 0.01;
 	 
 	animate();
 	function animate() {
 
-	    requestAnimationFrame(animate);
-	    //var averageval = Math.max((average2/1000)*2,0.01);
-	    
+	    requestAnimationFrame(animate);	    
 
 
 	    var averageval = (average2/1000);
 	    var average1val = (average/1000);
-
-	    //tick += 0.5;
-
-	    //min 0.01
 
 	    tickaverageval += (averageval*10); //nouvelle valeur incrémente au tick
 
@@ -177,13 +162,8 @@ window.requestAnimFrame = (function () {
 	    lineleft.position.x += Math.sin(tickaverageval) * 0.2
 	    lineright.position.x += Math.sin(tickaverageval) * 0.2
 
-	    //linebottom.position.x += Math.sin(tick * averageval* 10) * 0.08
-
-	    //dot.rotation.x += 0.01
 	    dot.rotation.x += Math.max(averageval, 0.01)
 	    dot.rotation.y += Math.max(average1val, 0.01)
-  		//dot.rotation.y += .02
-  		console.log()
   		cloneright.rotation.x += Math.max(averageval, 0.01)
   		cloneright.rotation.y += Math.max(average1val, 0.01)
 
@@ -198,28 +178,33 @@ window.requestAnimFrame = (function () {
   		groupparticles.rotation.x += 0.01
   		groupparticles.rotation.y += 0.01
 
-  		//console.log(averageval);
+  		//console.log(groupparticles);
 
+  		if(average <= 40) {
+  			//console.log("petit");
 
+  			//groupparticles.color = 0xe74c3c;
+  			//groupparticles[0].material.color.setHex(Math.random() * 0xe74c3c)
 
+  			for(var i in groupparticles.children) {
+	  			//console.log("particle");
+	  			groupparticles.children[i].material.color.setHex( 0x3498db)
+	  		}
 
-  		/*if(average2 >= 30) {
-  			L3.hex = 0x95a5a6;
-  			//L3.position.z = 100
   		} else {
-  			//L3.position.z = 400
-  		}*/
+  			//console.log("grand");
+  			//groupparticles[0].material.color.setHex(Math.random() * 0x3498db)
+
+  			for(var i in groupparticles.children) {
+  				
+
+  				groupparticles.children[i].material.color.setHex(0xe74c3c)
+
+	  		}
+	  		//groupparticles.color = 0x3498db;
+  		}
 
 
-
-	    /*for (var i = 0; i < nbofsphere; i++){
-	     
-	       spheres[i].rotation.x -= s[i]*.05;
-	      spheres[i].rotation.y -= s[i]*.05;
-	      
-	    }*/
-
-	    //controls.update();
 	    
 	    renderer.render(scene, camera);
 
@@ -408,10 +393,6 @@ window.requestAnimFrame = (function () {
         analyser2.getByteFrequencyData(array2);
         average2 = getAverageVolume(array2);
 
-        //console.log(average2);
-
-
- 
 
     }
 
@@ -431,10 +412,7 @@ window.requestAnimFrame = (function () {
 
     function replayExperiment() {
     	$( ".container-end-replay" ).click(function(e) {
-    		e.preventDefault();
-    		$(".container-end").fadeOut();
-    	setupAudioNodes();
-    loadSound("./ressources/breakingbad-song.mp3");
+    document.location.reload(true);
 
     	});
     	

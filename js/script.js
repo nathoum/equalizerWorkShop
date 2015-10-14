@@ -277,22 +277,10 @@ window.requestAnimFrame = (function () {
 
 
   		console.log(average);
-
-  		if(average <= 40) {
-
-  			for(var i in groupparticles.children) {	
-	  			groupparticles.children[i].material.color.setHex( 0x3498db)
-	  		}
-	  		//hideLines();
-
-  		} else {
-
-  			for(var i in groupparticles.children) {
-  				
-  				groupparticles.children[i].material.color.setHex(0xe74c3c)
-
-	  		}
-  		}
+  		for(var i in groupparticles.children) {	
+			 groupparticles.children[i].material.color.setHSL(average/100, average/ 100, average/100);
+		}
+  		
 
   		if(average <= 60) {
   			TweenMax.to(dot.scale, 0.5, { x:2.0, y:2.0, z:2.0, delay:5.0});

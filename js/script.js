@@ -1,6 +1,9 @@
 var average = 0.01;
 var average2 = 0.01;
 
+// var requirejs = require('requirejs');
+// var OrbitControls = require('three-orbit-controls')(THREE)
+
 window.requestAnimFrame = (function () {
 			    return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || function ( /* function */ callback, /* DOMElement */ element) {
 			        window.setTimeout(callback, 1000 / 60);
@@ -23,10 +26,18 @@ window.requestAnimFrame = (function () {
 			document.body.appendChild(renderer.domElement);
 
 
+
 		spheres = [];
 		s = [];
 
-		
+		controls = new THREE.OrbitControls( camera );
+		//controls.addEventListener( 'change', renderer );
+
+
+		//controls.addEventListener( 'change', render );
+
+
+		var colorbubbles = new THREE.MeshPhongMaterial({color: 0x2980b9, shading: THREE.FlatShading, fog: false } );
 
 
 		/*** ATOME EFFET PHONG ***/
@@ -118,18 +129,27 @@ window.requestAnimFrame = (function () {
 		scene.add( groupobject );//when done, add the group to the scene
 		//*********************
 
-		//test :
-		//lineleft.scale = (0.5, 0.5, 0.5);
+		var groupparticles = new THREE.Object3D();
+  		console.log(groupparticles);
+  		 for ( var i = 0; i < 120; i ++ ) {
+  		 	var mesh = new THREE.Mesh (new THREE.TetrahedronGeometry(10, 2), colorbubbles);
+  		 	mesh.position.x = Math.random() * 400 - 200;
+  		 	mesh.position.y = Math.random() * 400 - 200;
+  		 	mesh.position.z = Math.random() * 400 - 200;
+            mesh.rotation.x = Math.random() * 2 * Math.PI;
+            mesh.rotation.y = Math.random() * 2 * Math.PI;
 
-		/*ar dir = new THREE.Vector3( 1, 0, 0 );
-		var origin = new THREE.Vector3( 0, 0, 0 );
-		var length = 1;
-		var hex = 0xffff00;
+            mesh.scale.set(0.2,0.2,0.2);
 
-		var arrowHelper = new THREE.ArrowHelper( dir, origin, length, hex );
-		arrowHelper.position.x = 200;
-		scene.add( arrowHelper );*/
 
+            mesh.opacity = 50;
+           // mesh.matrixAutoUpdate = false;
+            //mesh.updateMatrix();
+
+            groupparticles.add( mesh );
+  		 }
+  		 console.log(groupparticles);
+  		scene.add( groupparticles );
 
 
 	   //var tick = 0.01;
@@ -148,6 +168,8 @@ window.requestAnimFrame = (function () {
 
 	    //tick += 0.5;
 
+	    //min 0.01
+
 	    tickaverageval += (averageval*10); //nouvelle valeur incrémente au tick
 
 	    //Sin() pour faire effet bounce/vibration
@@ -158,22 +180,27 @@ window.requestAnimFrame = (function () {
 	    //linebottom.position.x += Math.sin(tick * averageval* 10) * 0.08
 
 	    //dot.rotation.x += 0.01
-	    dot.rotation.x += averageval
-	    dot.rotation.y += average1val
+	    dot.rotation.x += Math.max(averageval, 0.01)
+	    dot.rotation.y += Math.max(average1val, 0.01)
   		//dot.rotation.y += .02
   		console.log()
-  		cloneright.rotation.x += averageval
-  		cloneright.rotation.y += average1val
+  		cloneright.rotation.x += Math.max(averageval, 0.01)
+  		cloneright.rotation.y += Math.max(average1val, 0.01)
 
-  		cloneleft.rotation.x += averageval
-  		cloneleft.rotation.y += average1val
+  		cloneleft.rotation.x += Math.max(averageval, 0.01)
+  		cloneleft.rotation.y += Math.max(average1val, 0.01)
 
-  		clonebottom.rotation.x += averageval
-  		clonebottom.rotation.y += average1val
+  		clonebottom.rotation.x += Math.max(averageval, 0.01)
+  		clonebottom.rotation.y += Math.max(average1val, 0.01)
 
   		groupobject.rotation.z += 0.01
 
-  		//console.log(average2);
+  		groupparticles.rotation.x += 0.01
+  		groupparticles.rotation.y += 0.01
+
+  		//console.log(averageval);
+
+
 
 
   		/*if(average2 >= 30) {
@@ -191,8 +218,11 @@ window.requestAnimFrame = (function () {
 	      spheres[i].rotation.y -= s[i]*.05;
 	      
 	    }*/
+
+	    //controls.update();
 	    
 	    renderer.render(scene, camera);
+
 	   ;
 	}
 
@@ -346,12 +376,18 @@ window.requestAnimFrame = (function () {
         sourceNode.buffer = buffer;
         sourceNode.start(0);
         sourceNode.onended = onEnded;
+
+        
+        //$(".container-end").fadeIn();
         /*sourceNode.loop = true;*/
     }
 
     function onEnded() {
 	    console.log('playback finished');
 	    var soundavg = 0;
+
+	    console.log("music ended");
+	    $(".container-end").fadeIn();
 	}
 
     // log if an error occurs
@@ -392,3 +428,15 @@ window.requestAnimFrame = (function () {
         average = values / length;
         return average;
     }
+
+    function replayExperiment() {
+    	$( ".container-end-replay" ).click(function(e) {
+    		e.preventDefault();
+    		$(".container-end").fadeOut();
+    	setupAudioNodes();
+    loadSound("./ressources/breakingbad-song.mp3");
+
+    	});
+    	
+    }
+    replayExperiment();

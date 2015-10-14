@@ -58,6 +58,8 @@
     "signals": "*",
     "vinyl-buffer": "*",
     "vinyl-source-stream": "*",
-    "yargs": "*"
+    "yargs": "*",
+    "requirejs": "*",
+    "three-orbit-controls": "*"
   }
 }

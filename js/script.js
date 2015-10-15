@@ -34,6 +34,8 @@ window.requestAnimFrame = (function () {
 		controls = new THREE.OrbitControls( camera );
 
 
+
+
 		/******************** BUBBLES METEOR ******************/
 		var colorbubbles = new THREE.MeshPhongMaterial({color: 0x2980b9, shading: THREE.FlatShading, fog: false, transparent: true } );
 
@@ -231,6 +233,10 @@ window.requestAnimFrame = (function () {
 			linebottom.material.opacity = 0;
 			linebottom.material.opacity.needsUpdate = true;
 
+			$(".logo-gobelins").css("opacity", "0");
+			$(".container-end-content-title1").css("opacity", "0");
+			$(".container-end-replay").css("opacity", "0");
+
 			for(var i in groupparticles.children) {
 	  			groupparticles.children[i].material.opacity = 0;
 	  		}
@@ -242,7 +248,8 @@ window.requestAnimFrame = (function () {
 	animate();
 	function animate() {
 
-	    requestAnimationFrame(animate);	    
+	    requestAnimationFrame(animate);	  
+
 
 
 	    var averageval = (average2/1000);
@@ -270,14 +277,6 @@ window.requestAnimFrame = (function () {
 
   		groupparticles.rotation.x += 0.01
   		groupparticles.rotation.y += 0.01
-
-  		//moleculesgroup.rotation.x += 0.01
-  		//moleculesgroup.rotation.y += 0.01
-
-  		//moleculesgroup.scale.set(average/10,average/10,average/10);
-
-  		//moleculesgroup.position += average;
-
 
 
   		//console.log(average);
@@ -403,6 +402,7 @@ window.requestAnimFrame = (function () {
 	    var soundavg = 0;
 
 	    	console.log("music ended");
+	    	TweenMax.to($(".subtitles-content-pname"), 0.5, {opacity: 0});
 	    	$(".container-end").fadeIn();
 	    	animateEndContent();
 
@@ -482,10 +482,14 @@ window.requestAnimFrame = (function () {
 		song.get(0).play();
     }
 
+    function soundLinesMolecule() {
+    	song.attr("src", "ressources/nocturne.mp3");
+    }
+
     function animateEndContent() {
-    	TweenLite.to($(".logo-gobelins"), 1.0, {opacity:1, ease:Back.easeOut});
-    	TweenLite.to($(".container-end-content-title1"), 1.0, {opacity:1, delay: 0.5, ease:Back.easeOut});
-    	TweenLite.to($(".container-end-replay"), 1.0, {scaleX:1, scaleY:1, delay: 1.0, ease:Back.easeOut});
+    	TweenLite.to($(".logo-gobelins"), 2.0, {opacity:1, ease:Back.easeOut, delay: 0.5});
+    	TweenLite.to($(".container-end-content-title1"), 2.0, {opacity:1, delay: 1.5, ease:Back.easeOut});
+    	TweenLite.to($(".container-end-replay"), 2.0, {opacity: 1, delay: 2.5, ease:Back.easeOut});
     }
 
 
@@ -499,9 +503,9 @@ window.requestAnimFrame = (function () {
 	function titleHasAppeared() {
 		//TweenMax.to(lineintro.material, 1.0, { opacity: 1, ease:Back.easeOut});
 		TweenLite.to($(".content-text-line"), 1.0, {width:350, ease:Back.easeOut});
-		TweenLite.to($(".content-text-title2"), 1.0, {opacity:1, delay: 0.8, ease:Back.easeOut});
-		TweenLite.to($(".content-text-title3"), 1.0, {opacity:1, delay: 1.5, ease:Back.easeOut});
-		TweenLite.to($(".content-text-start"), 1.5, {opacity:1, delay: 2.0, ease:Back.easeOut});
+		TweenLite.to($(".content-text-title2"), 2.0, {opacity:1, delay: 0.8, ease:Back.easeOut});
+		TweenLite.to($(".content-text-title3"), 2.0, {opacity:1, delay: 1.5, ease:Back.easeOut});
+		TweenLite.to($(".content-text-start"), 2.0, {opacity:1, delay: 2.5, ease:Back.easeOut});
 		//TweenLite.to($(".content-text-title2"), 1.0, {opacity:1, delay: 0.8, ease:Power3.easeOut, onComplete:bigMiddleMeteor});
 	
 	}
@@ -515,8 +519,8 @@ window.requestAnimFrame = (function () {
 		TweenLite.to($(".content-text-line"), 1.0, {width:0, delay:1.0, ease:Power3.easeOut});
 		TweenLite.to($(".content-text-title2"), 1.0, {opacity:0, delay:1.0, ease:Power3.easeOut});
 		TweenLite.to($(".content-text-title3"), 1.0, {opacity:0, delay:1.5, ease:Power3.easeOut});
-		TweenLite.to($(".content-text-start"), 1.0, {opacity:0, delay:2.0, ease:Power3.easeOut});
-		TweenMax.to(dot.material, 0.5, { opacity: 1, delay:2.0, onComplete:firstSmallMeteor});
+		TweenLite.to($(".content-text-start"), 2.0, {opacity:0, delay:1.8, ease:Power3.easeOut});
+		TweenMax.to(dot.material, 0.5, { opacity: 1, delay:2.5, onComplete:firstSmallMeteor});
 		//loadSound("./ressources/breakingbad-song.mp3");
 		//TweenLite.to($(".content-text-title1"), 1.0, {opacity:0, opacity:0, ease:Power3.easeOut, delay:1.5, onComplete:titleHasAppeared});
 	}
@@ -549,12 +553,16 @@ window.requestAnimFrame = (function () {
 
 	function firstLine() {
 
+		soundLinesMolecule();
+		pauseplaysong();
+
 		TweenMax.to(lineleft.material, 0.5, { opacity: 1, onComplete:secondLine});
 
 	}
 
 	function secondLine() {
-		
+		soundLinesMolecule();
+		pauseplaysong();
 		isSoundMusic = 1;
 		loadSound("./ressources/breakingbad-song.mp3");
 		TweenMax.to(lineright.material, 0.5, { opacity: 1, onComplete:thirdLine});
@@ -564,42 +572,39 @@ window.requestAnimFrame = (function () {
 	}
 
 	function thirdLine() {
-
+		soundLinesMolecule();
+		pauseplaysong();
 		TweenMax.to(linebottom.material, 0.5, { opacity: 1, onComplete:displayparticules});
-		//loadSound("./ressources/breakingbad-song.mp3");
 
 	}
 
 	function displayparticules() {
-
+		song.get(0).pause();
 		for(var i in groupparticles.children) {
   			TweenMax.to(groupparticles.children[i].material, 0.5, { opacity: 1});
   		}
 
 
   		TweenMax.staggerTo(".subtitles-content-p", 2, {opacity:1, ease:Quad.easeOut}, 5.0);
-  		TweenMax.staggerTo(".subtitles-content-p", 2, {opacity:0, delay:2,ease:Quad.easeIn}, 5.0);
+  		TweenMax.staggerTo(".subtitles-content-p", 2, {opacity:0, delay:1.5,ease:Quad.easeIn}, 5.0);
 
-  		//TweenMax.to($(".subtitles-content-p15"), 1.0, {fontSize: "1.8em", delay: 54.5});
+  		TweenMax.to($(".subtitles-content-pname"), 1.0, {scale: 1.5, delay: 65.5});
+  		//TweenMax.to(camera.position, 1.0, {x: 5, delay: 61.5});
   		
 	}
 
 	function hideLines() {
-		//delay: 5.0
 		console.log("change scale");
 		TweenMax.to(lineright.material, 0.5, { opacity: 0, ease:Bounce.easeOut, onComplete:showLines});
 		TweenMax.to(lineleft.material, 0.5, { opacity: 0, ease:Bounce.easeOut, onComplete:showLines});
 		TweenMax.to(linebottom.material, 0.5, { opacity: 0, ease:Bounce.easeOut, onComplete:showLines});
-		//TweenMax.to(dot.scale, 0.5, { x:0.5, y:0.5, z:0.5, delay:5.0});
 	}
 
 	function showLines() {
-		//delay: 5.0
 		console.log("change scale");
 		TweenMax.to(lineright.material, 0.5, { opacity: 1, delay: 1.0, ease:Bounce.easeOut});
 		TweenMax.to(lineleft.material, 0.5, { opacity: 1, delay: 1.0, ease:Bounce.easeOut});
 		TweenMax.to(linebottom.material, 0.5, { opacity: 1, delay: 1.0, ease:Bounce.easeOut});
-		//TweenMax.to(dot.scale, 0.5, { x:0.5, y:0.5, z:0.5, delay:5.0});
 	}
 
 

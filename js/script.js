@@ -24,6 +24,8 @@ window.requestAnimFrame = (function () {
 			renderer.setSize(window.innerWidth, window.innerHeight);
 			document.body.appendChild(renderer.domElement);
 
+			var isSoundMusic = 0;
+
 
 
 		spheres = [];
@@ -493,8 +495,13 @@ window.requestAnimFrame = (function () {
 	    console.log('playback finished');
 	    var soundavg = 0;
 
-	    console.log("music ended");
-	    $(".container-end").fadeIn();
+	    if(isSoundMusic == 1) {
+	    	console.log("music ended");
+	    	$(".container-end").fadeIn();
+	    }
+
+
+	    
 	}
 
     // log if an error occurs
@@ -544,6 +551,25 @@ window.requestAnimFrame = (function () {
 
     /********************* ANIMATIONS **************/
 
+    //AUDIO SELECTOR
+    var song = $('#audio');
+
+    function startExperiment() {
+    	$(".js-start").click(function(e) {
+    		e.preventDefault();
+    		console.log("clic");
+    		bigMiddleMeteor();
+
+    	});
+    }
+    startExperiment();
+
+    function pauseplaysong() {
+    	song.get(0).pause();
+		song.get(0).currentTime = 0;
+		song.get(0).play();
+    }
+
 
     //TweenLite.to($(".content-text-title1"), 1.5, {width:100, delay:0.5, onComplete:myFunction});
 
@@ -554,41 +580,50 @@ window.requestAnimFrame = (function () {
     
 	function titleHasAppeared() {
 		//TweenMax.to(lineintro.material, 1.0, { opacity: 1, ease:Back.easeOut});
-		TweenLite.to($(".content-text-line"), 1.0, {width:350, ease:Power3.easeOut});
-		TweenLite.to($(".content-text-title2"), 1.0, {opacity:1, delay: 0.8, ease:Power3.easeOut, onComplete:bigMiddleMeteor});
-
-
-		//TweenLite.to($(".content-text-title2"), 1.0, {scaleX:1, scaleY:1, ease:Power3.easeOut, onComplete:bigMiddleMeteor});
-
-		//TweenMax.to(dot.material, 0.5, { opacity: 1, onComplete:firstSmallMeteor});
-		//TweenLite.from($(".content-text-title2"), 1.0, {scaleX:0, scaleY:0, ease:Power3.easeOut});
-		//TweenMax.to(dot.material, 0.5, { opacity: 1, delay:1.0, onComplete:firstSmallMeteor});
-		
+		TweenLite.to($(".content-text-line"), 1.0, {width:350, ease:Back.easeOut});
+		TweenLite.to($(".content-text-title2"), 1.0, {opacity:1, delay: 0.8, ease:Back.easeOut});
+		TweenLite.to($(".content-text-title3"), 1.0, {opacity:1, delay: 1.5, ease:Back.easeOut});
+		TweenLite.to($(".content-text-start"), 1.5, {opacity:1, delay: 2.0, ease:Back.easeOut});
+		//TweenLite.to($(".content-text-title2"), 1.0, {opacity:1, delay: 0.8, ease:Power3.easeOut, onComplete:bigMiddleMeteor});
 	
 	}
 
 	function bigMiddleMeteor() {
+		window.setTimeout(function() {
+	  $(".content-text-start").hide();
+	}, 2500);
+
 		TweenLite.to($(".content-text-title1"), 1.0, {opacity:0, delay:0.5, ease:Power3.easeOut});
 		TweenLite.to($(".content-text-line"), 1.0, {width:0, delay:1.0, ease:Power3.easeOut});
 		TweenLite.to($(".content-text-title2"), 1.0, {opacity:0, delay:1.0, ease:Power3.easeOut});
-		TweenMax.to(dot.material, 0.5, { opacity: 1, delay:1.5, onComplete:firstSmallMeteor});
+		TweenLite.to($(".content-text-title3"), 1.0, {opacity:0, delay:1.5, ease:Power3.easeOut});
+		TweenLite.to($(".content-text-start"), 1.0, {opacity:0, delay:2.0, ease:Power3.easeOut});
+		TweenMax.to(dot.material, 0.5, { opacity: 1, delay:2.0, onComplete:firstSmallMeteor});
+		//loadSound("./ressources/breakingbad-song.mp3");
 		//TweenLite.to($(".content-text-title1"), 1.0, {opacity:0, opacity:0, ease:Power3.easeOut, delay:1.5, onComplete:titleHasAppeared});
 	}
 
 	function firstSmallMeteor() {
+		//loadSound("./ressources/soundspace.mp3");
+		/*setupAudioNodes();*/
+		song.get(0).play();
 
+		
 		TweenMax.to(cloneleft.material, 0.5, { opacity: 1, onComplete:secondSmallMeteor});
+		//loadSound("./ressources/laser.mp3");
 
 
 	}
 
 	function secondSmallMeteor() {
+		pauseplaysong()
 
 		TweenMax.to(cloneright.material, 0.5, { opacity: 1, onComplete:thirdSmallMeteor});
 
 	}
 
 	function thirdSmallMeteor() {
+		pauseplaysong()
 
 		TweenMax.to(clonebottom.material, 0.5, { opacity: 1, onComplete:firstLine});
 
@@ -601,9 +636,12 @@ window.requestAnimFrame = (function () {
 	}
 
 	function secondLine() {
-
-		TweenMax.to(lineright.material, 0.5, { opacity: 1, onComplete:thirdLine});
+		
+		isSoundMusic = 1;
 		loadSound("./ressources/breakingbad-song.mp3");
+		TweenMax.to(lineright.material, 0.5, { opacity: 1, onComplete:thirdLine});
+		
+
 
 	}
 

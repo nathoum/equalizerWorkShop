@@ -8,8 +8,6 @@ window.requestAnimFrame = (function () {
 			        window.setTimeout(callback, 1000 / 60);
 			    };
 			})();      
-			//var camera = new THREE.PerspectiveCamera(5, window.innerWidth / window.innerHeight, 1, 9500);
-	      	//camera.position.z = 9000; //9000
 
 	      	var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 1000);
 
@@ -298,18 +296,10 @@ window.requestAnimFrame = (function () {
   			
   		}
 
-  		/*linebottom.position.x += Math.sin(tickaverageval) * 0.2
-	    lineleft.position.x += Math.sin(tickaverageval) * 0.2
-	    lineright.position.x += Math.sin(tickaverageval) * 0.2*/
 
   		if(average >= 80) {
   			hideLines();
   		}
-
-
-
-
-
 
 
 	    
@@ -325,67 +315,6 @@ window.requestAnimFrame = (function () {
 	//**************************************//
 
 
-
-
-	document.addEventListener("keydown", keydown );
-
-	function keydown(e) {
-
-		//console.log( e.keyCode );
-		//console.log("keycode");
-
-		/*switch( e.keyCode ) {
-			case 13: // ENTER
-	            lineleft.position.z -= 1;
-	            console.log( "position.z:", lineleft.position.z);
-	        break; 
-	        case 32: // SPACE
-	            lineleft.position.z += 1;
-	            console.log( "position.z:", lineleft.position.z);
-	        break;
-	        case 38: // UP
-	            lineleft.position.y += 1;
-	            console.log( "position.y:", lineleft.position.y);
-	        break; 
-	        case 40: // DOWN
-	            lineleft.position.y -= 1;
-	            console.log( "position.y:", lineleft.position.y);
-	        break;
-	        case 37: // LEFT
-	            lineleft.position.x -= 1;
-	            console.log( "position.x:", lineleft.position.x);
-	        break; 
-	        case 39: // RIGHT
-	            lineleft.position.x += 1;
-	            console.log( "position.x:", lineleft.position.x);
-	        break;
-	        case 65: // A
-	            lineleft.rotation.z -= 1;
-	            console.log( "rotation.z:", lineleft.rotation.z);
-	        break; 
-	        case 69: // E
-	            lineleft.rotation.z += 1;
-	            console.log( "rotation.z:", lineleft.rotation.z);
-	        break;
-	        case 90: // Z
-	            lineleft.rotation.y -= 1;
-	            console.log( "rotation.y:", lineleft.rotation.y);
-	        break; 
-	        case 83: // S
-	            lineleft.rotation.y += 1;
-	            console.log( "rotation.y:", lineleft.rotation.y);
-	        break;
-	        case 81: // Q
-	            lineleft.rotation.x -= 1;
-	            console.log( "rotation.x:", lineleft.rotation.x);
-	        break; 
-	        case 68: // D
-	            lineleft.rotation.x += 1;
-	            console.log( "rotation.x:", lineleft.rotation.x);
-	        break;
-	    }*/
-
-	}
 
 	//********************** AUDIO ********
 	// creation of the audio context
@@ -406,8 +335,6 @@ window.requestAnimFrame = (function () {
 
     // load the sound
     setupAudioNodes();
-    //loadSound("http://www.twin-dev.net/experiments/audio/breakingbad-song.mp3");
-    //loadSound("./ressources/breakingbad-song.mp3");
 
     function setupAudioNodes() {
 
@@ -477,6 +404,7 @@ window.requestAnimFrame = (function () {
 
 	    	console.log("music ended");
 	    	$(".container-end").fadeIn();
+	    	animateEndContent();
 
 
 	    
@@ -536,6 +464,8 @@ window.requestAnimFrame = (function () {
     //AUDIO SELECTOR
     var song = $('#audio');
 
+
+
     function startExperiment() {
     	$(".js-start").click(function(e) {
     		e.preventDefault();
@@ -550,6 +480,12 @@ window.requestAnimFrame = (function () {
     	song.get(0).pause();
 		song.get(0).currentTime = 0;
 		song.get(0).play();
+    }
+
+    function animateEndContent() {
+    	TweenLite.to($(".logo-gobelins"), 1.0, {opacity:1, ease:Back.easeOut});
+    	TweenLite.to($(".container-end-content-title1"), 1.0, {opacity:1, delay: 0.5, ease:Back.easeOut});
+    	TweenLite.to($(".container-end-replay"), 1.0, {scaleX:1, scaleY:1, delay: 1.0, ease:Back.easeOut});
     }
 
 
@@ -640,35 +576,11 @@ window.requestAnimFrame = (function () {
   			TweenMax.to(groupparticles.children[i].material, 0.5, { opacity: 1});
   		}
 
-  		TweenMax.to($(".subtitles-content-p1"), 1.0, {opacity: 1, delay: 3.0});
-  		TweenMax.to($(".subtitles-content-p1"), 0.5, {opacity: 0, delay: 6.0});
-  		TweenMax.to($(".subtitles-content-p2"), 1.0, {opacity: 1, delay: 6.5});
-  		TweenMax.to($(".subtitles-content-p2"), 1.0, {opacity: 0, delay: 9.5});
-  		TweenMax.to($(".subtitles-content-p3"), 1.0, {opacity: 1, delay: 10.0});
-  		TweenMax.to($(".subtitles-content-p3"), 1.0, {opacity: 0, delay: 13.0});
-  		TweenMax.to($(".subtitles-content-p4"), 1.0, {opacity: 1, delay: 13.5});
-  		TweenMax.to($(".subtitles-content-p4"), 1.0, {opacity: 0, delay: 16.5});
-  		TweenMax.to($(".subtitles-content-p5"), 1.0, {opacity: 1, delay: 17.0});
-  		TweenMax.to($(".subtitles-content-p5"), 1.0, {opacity: 0, delay: 20.0});
-  		TweenMax.to($(".subtitles-content-p6"), 1.0, {opacity: 1, delay: 20.5});
-  		TweenMax.to($(".subtitles-content-p6"), 1.0, {opacity: 0, delay: 23.5});
-  		TweenMax.to($(".subtitles-content-p7"), 1.0, {opacity: 1, delay: 24.0});
-  		TweenMax.to($(".subtitles-content-p7"), 1.0, {opacity: 0, delay: 27.0});
-  		TweenMax.to($(".subtitles-content-p8"), 1.0, {opacity: 1, delay: 27.5});
-  		TweenMax.to($(".subtitles-content-p8"), 1.0, {opacity: 0, delay: 30.5});
-  		TweenMax.to($(".subtitles-content-p9"), 1.0, {opacity: 1, delay: 31.0});
-  		TweenMax.to($(".subtitles-content-p9"), 1.0, {opacity: 0, delay: 34.0});
-  		TweenMax.to($(".subtitles-content-p10"), 1.0, {opacity: 1, delay: 34.5});
-  		TweenMax.to($(".subtitles-content-p10"), 1.0, {opacity: 0, delay: 37.5});
-  		TweenMax.to($(".subtitles-content-p11"), 1.0, {opacity: 1, delay: 38.0});
-  		TweenMax.to($(".subtitles-content-p11"), 1.0, {opacity: 0, delay: 41.0});
-  		TweenMax.to($(".subtitles-content-p12"), 1.0, {opacity: 1, delay: 41.5});
-  		TweenMax.to($(".subtitles-content-p12"), 1.0, {opacity: 0, delay: 44.5});
-  		TweenMax.to($(".subtitles-content-p13"), 1.0, {opacity: 1, delay: 45.0});
-  		TweenMax.to($(".subtitles-content-p13"), 1.0, {opacity: 0, delay: 48.0});
-  		TweenMax.to($(".subtitles-content-p14"), 1.0, {opacity: 1, delay: 48.5});
-  		TweenMax.to($(".subtitles-content-p14"), 1.0, {opacity: 0, delay: 51.5});
-  		TweenMax.to($(".subtitles-content-p15"), 1.0, {opacity: 1, delay: 54.5});
+
+  		TweenMax.staggerTo(".subtitles-content-p", 2, {opacity:1, ease:Quad.easeOut}, 5.0);
+  		TweenMax.staggerTo(".subtitles-content-p", 2, {opacity:0, delay:2,ease:Quad.easeIn}, 5.0);
+
+  		//TweenMax.to($(".subtitles-content-p15"), 1.0, {fontSize: "1.8em", delay: 54.5});
   		
 	}
 

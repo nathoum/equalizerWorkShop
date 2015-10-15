@@ -34,6 +34,30 @@ window.requestAnimFrame = (function () {
 		controls = new THREE.OrbitControls( camera );
 
 
+		/************** LIGNE INTRO *************************/
+
+		/*var lineintromaterial = new THREE.LineBasicMaterial({
+		color: 0xecf0f1,
+		transparent: true
+		});
+
+
+
+		var lineintrogeometry = new THREE.Geometry();
+		lineintrogeometry.vertices.push(
+			new THREE.Vector3( -40, -20, 0 ),
+			new THREE.Vector3( 40, -20, 0 )
+		);
+
+		var lineintro = new THREE.Line( lineintrogeometry, lineintromaterial );
+		lineintro.material.linewidth = 1;
+		//lineintro.material.opacity = 0;
+		lineintro.material.opacity.needsUpdate = true;
+		lineintro.rotation.x = 0.1;
+		scene.add( lineintro );*/
+		/********************************/
+
+
 		/******************** BUBBLES METEOR ******************/
 		var colorbubbles = new THREE.MeshPhongMaterial({color: 0x2980b9, shading: THREE.FlatShading, fog: false, transparent: true } );
 
@@ -276,7 +300,7 @@ window.requestAnimFrame = (function () {
 
 
 
-  		console.log(average);
+  		//console.log(average);
   		for(var i in groupparticles.children) {	
 			 groupparticles.children[i].material.color.setHSL(average/100, average/ 100, average/100);
 		}
@@ -328,7 +352,7 @@ window.requestAnimFrame = (function () {
 		//console.log( e.keyCode );
 		//console.log("keycode");
 
-		switch( e.keyCode ) {
+		/*switch( e.keyCode ) {
 			case 13: // ENTER
 	            lineleft.position.z -= 1;
 	            console.log( "position.z:", lineleft.position.z);
@@ -377,7 +401,7 @@ window.requestAnimFrame = (function () {
 	            lineleft.rotation.x += 1;
 	            console.log( "rotation.x:", lineleft.rotation.x);
 	        break;
-	    }
+	    }*/
 
 	}
 
@@ -523,16 +547,38 @@ window.requestAnimFrame = (function () {
 
     //TweenLite.to($(".content-text-title1"), 1.5, {width:100, delay:0.5, onComplete:myFunction});
 
-    TweenLite.from($(".content-text-title1"), 1.0, {scaleX:0, scaleY:0, ease:Power3.easeOut, delay:1.5, onComplete:titleHasAppeared});
+    window.setTimeout(function() {
+	  TweenLite.to($(".content-text-title1"), 1.0, {opacity:1, ease:Back.easeOut, onComplete:titleHasAppeared});
+	}, 1000);
+
+    
 	function titleHasAppeared() {
+		//TweenMax.to(lineintro.material, 1.0, { opacity: 1, ease:Back.easeOut});
+		TweenLite.to($(".content-text-line"), 1.0, {width:350, ease:Power3.easeOut});
+		TweenLite.to($(".content-text-title2"), 1.0, {opacity:1, delay: 0.8, ease:Power3.easeOut, onComplete:bigMiddleMeteor});
+
+
+		//TweenLite.to($(".content-text-title2"), 1.0, {scaleX:1, scaleY:1, ease:Power3.easeOut, onComplete:bigMiddleMeteor});
+
 		//TweenMax.to(dot.material, 0.5, { opacity: 1, onComplete:firstSmallMeteor});
-		TweenMax.to(dot.material, 0.5, { opacity: 1, onComplete:firstSmallMeteor});
+		//TweenLite.from($(".content-text-title2"), 1.0, {scaleX:0, scaleY:0, ease:Power3.easeOut});
+		//TweenMax.to(dot.material, 0.5, { opacity: 1, delay:1.0, onComplete:firstSmallMeteor});
+		
 	
+	}
+
+	function bigMiddleMeteor() {
+		TweenLite.to($(".content-text-title1"), 1.0, {opacity:0, delay:0.5, ease:Power3.easeOut});
+		TweenLite.to($(".content-text-line"), 1.0, {width:0, delay:1.0, ease:Power3.easeOut});
+		TweenLite.to($(".content-text-title2"), 1.0, {opacity:0, delay:1.0, ease:Power3.easeOut});
+		TweenMax.to(dot.material, 0.5, { opacity: 1, delay:1.5, onComplete:firstSmallMeteor});
+		//TweenLite.to($(".content-text-title1"), 1.0, {opacity:0, opacity:0, ease:Power3.easeOut, delay:1.5, onComplete:titleHasAppeared});
 	}
 
 	function firstSmallMeteor() {
 
 		TweenMax.to(cloneleft.material, 0.5, { opacity: 1, onComplete:secondSmallMeteor});
+
 
 	}
 

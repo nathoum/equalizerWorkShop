@@ -233,13 +233,15 @@ window.requestAnimFrame = (function () {
 			linebottom.material.opacity = 0;
 			linebottom.material.opacity.needsUpdate = true;
 
+			for(var i in groupparticles.children) {
+	  			groupparticles.children[i].material.opacity = 0;
+	  		}
+
 			$(".logo-gobelins").css("opacity", "0");
 			$(".container-end-content-title1").css("opacity", "0");
 			$(".container-end-replay").css("opacity", "0");
 
-			for(var i in groupparticles.children) {
-	  			groupparticles.children[i].material.opacity = 0;
-	  		}
+			
   		}
   		opacityElements();
 
@@ -447,11 +449,11 @@ window.requestAnimFrame = (function () {
 
     function replayExperiment() {
     	$( ".container-end-replay" ).click(function(e) {
-    		//document.location.reload(true);
-    		$(".container-end").fadeOut();
+    		document.location.reload(true);
+    		/*$(".container-end").fadeOut();
     		setupAudioNodes();
     		opacityElements();
-    		bigMiddleMeteor();
+    		bigMiddleMeteor();*/
 
     	});
     	
@@ -528,6 +530,7 @@ window.requestAnimFrame = (function () {
 	function firstSmallMeteor() {
 		//loadSound("./ressources/soundspace.mp3");
 		/*setupAudioNodes();*/
+		song.attr("src", "ressources/space-sound.mp3");
 		song.get(0).play();
 
 		
@@ -538,6 +541,7 @@ window.requestAnimFrame = (function () {
 	}
 
 	function secondSmallMeteor() {
+		song.attr("src", "ressources/space-sound.mp3");
 		pauseplaysong()
 
 		TweenMax.to(cloneright.material, 0.5, { opacity: 1, onComplete:thirdSmallMeteor});
@@ -545,6 +549,7 @@ window.requestAnimFrame = (function () {
 	}
 
 	function thirdSmallMeteor() {
+		song.attr("src", "ressources/space-sound.mp3");
 		pauseplaysong()
 
 		TweenMax.to(clonebottom.material, 0.5, { opacity: 1, onComplete:firstLine});
@@ -579,10 +584,13 @@ window.requestAnimFrame = (function () {
 	}
 
 	function displayparticules() {
-		song.get(0).pause();
+
 		for(var i in groupparticles.children) {
   			TweenMax.to(groupparticles.children[i].material, 0.5, { opacity: 1});
+  			console.log("opacite");
   		}
+  		song.get(0).pause();
+		song.get(0).currentTime = 0;
 
 
   		TweenMax.staggerTo(".subtitles-content-p", 2, {opacity:1, ease:Quad.easeOut}, 5.0);

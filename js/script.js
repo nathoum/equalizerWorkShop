@@ -36,30 +36,6 @@ window.requestAnimFrame = (function () {
 		controls = new THREE.OrbitControls( camera );
 
 
-		/************** LIGNE INTRO *************************/
-
-		/*var lineintromaterial = new THREE.LineBasicMaterial({
-		color: 0xecf0f1,
-		transparent: true
-		});
-
-
-
-		var lineintrogeometry = new THREE.Geometry();
-		lineintrogeometry.vertices.push(
-			new THREE.Vector3( -40, -20, 0 ),
-			new THREE.Vector3( 40, -20, 0 )
-		);
-
-		var lineintro = new THREE.Line( lineintrogeometry, lineintromaterial );
-		lineintro.material.linewidth = 1;
-		//lineintro.material.opacity = 0;
-		lineintro.material.opacity.needsUpdate = true;
-		lineintro.rotation.x = 0.1;
-		scene.add( lineintro );*/
-		/********************************/
-
-
 		/******************** BUBBLES METEOR ******************/
 		var colorbubbles = new THREE.MeshPhongMaterial({color: 0x2980b9, shading: THREE.FlatShading, fog: false, transparent: true } );
 
@@ -119,17 +95,10 @@ window.requestAnimFrame = (function () {
 		 scene.add(dot);
 
 		 dot.scale.set(2,2,2);
-		 /*dot.material.opacity = 0;
-		 dot.transparent = true;
-		 dot.material.needsUpdate = true;
-		 dot.geometry.verticesNeedUpdate = true;*/
+
 
 		 console.log(dot.material);
 		 		 
-
-		 dot.material.opacity = 0;
-		 dot.material.opacity.needsUpdate = true;
-
 		 /********************/
 
 		var cloneright = new THREE.Mesh(new THREE.TetrahedronGeometry(10, 2), golfsmallright);
@@ -147,17 +116,7 @@ window.requestAnimFrame = (function () {
 		scene.add( clonebottom );
 		clonebottom.position.y = -60;
 
-		cloneright.material.opacity = 0;
-		cloneright.material.opacity.needsUpdate = true;
-
-		cloneleft.material.opacity = 0;
-		cloneleft.material.opacity.needsUpdate = true;
-
-		clonebottom.material.opacity = 0;
-		clonebottom.material.opacity.needsUpdate = true;
-
-
-
+		
 
 		/****** segments *******/
 		//SEGMENT LEFT
@@ -204,12 +163,7 @@ window.requestAnimFrame = (function () {
 		linebottom.material.linewidth = 2;
 		scene.add( linebottom );
 
-		lineleft.material.opacity = 0;
-		lineleft.material.opacity.needsUpdate = true;
-		lineright.material.opacity = 0;
-		lineright.material.opacity.needsUpdate = true;
-		linebottom.material.opacity = 0;
-		linebottom.material.opacity.needsUpdate = true;
+		
 
 		//********************
 
@@ -258,6 +212,32 @@ window.requestAnimFrame = (function () {
 
 
   		/**************** --------------------- **************/
+
+  		function opacityElements() {
+  			dot.material.opacity = 0;
+			dot.material.opacity.needsUpdate = true;
+
+			cloneright.material.opacity = 0;
+			cloneright.material.opacity.needsUpdate = true;
+
+			cloneleft.material.opacity = 0;
+			cloneleft.material.opacity.needsUpdate = true;
+
+			clonebottom.material.opacity = 0;
+			clonebottom.material.opacity.needsUpdate = true;
+
+			lineleft.material.opacity = 0;
+			lineleft.material.opacity.needsUpdate = true;
+			lineright.material.opacity = 0;
+			lineright.material.opacity.needsUpdate = true;
+			linebottom.material.opacity = 0;
+			linebottom.material.opacity.needsUpdate = true;
+
+			for(var i in groupparticles.children) {
+	  			groupparticles.children[i].material.opacity = 0;
+	  		}
+  		}
+  		opacityElements();
 
 
 	 
@@ -495,10 +475,8 @@ window.requestAnimFrame = (function () {
 	    console.log('playback finished');
 	    var soundavg = 0;
 
-	    if(isSoundMusic == 1) {
 	    	console.log("music ended");
 	    	$(".container-end").fadeIn();
-	    }
 
 
 	    
@@ -541,7 +519,11 @@ window.requestAnimFrame = (function () {
 
     function replayExperiment() {
     	$( ".container-end-replay" ).click(function(e) {
-    document.location.reload(true);
+    		//document.location.reload(true);
+    		$(".container-end").fadeOut();
+    		setupAudioNodes();
+    		opacityElements();
+    		bigMiddleMeteor();
 
     	});
     	
@@ -657,6 +639,37 @@ window.requestAnimFrame = (function () {
 		for(var i in groupparticles.children) {
   			TweenMax.to(groupparticles.children[i].material, 0.5, { opacity: 1});
   		}
+
+  		TweenMax.to($(".subtitles-content-p1"), 1.0, {opacity: 1, delay: 3.0});
+  		TweenMax.to($(".subtitles-content-p1"), 0.5, {opacity: 0, delay: 6.0});
+  		TweenMax.to($(".subtitles-content-p2"), 1.0, {opacity: 1, delay: 6.5});
+  		TweenMax.to($(".subtitles-content-p2"), 1.0, {opacity: 0, delay: 9.5});
+  		TweenMax.to($(".subtitles-content-p3"), 1.0, {opacity: 1, delay: 10.0});
+  		TweenMax.to($(".subtitles-content-p3"), 1.0, {opacity: 0, delay: 13.0});
+  		TweenMax.to($(".subtitles-content-p4"), 1.0, {opacity: 1, delay: 13.5});
+  		TweenMax.to($(".subtitles-content-p4"), 1.0, {opacity: 0, delay: 16.5});
+  		TweenMax.to($(".subtitles-content-p5"), 1.0, {opacity: 1, delay: 17.0});
+  		TweenMax.to($(".subtitles-content-p5"), 1.0, {opacity: 0, delay: 20.0});
+  		TweenMax.to($(".subtitles-content-p6"), 1.0, {opacity: 1, delay: 20.5});
+  		TweenMax.to($(".subtitles-content-p6"), 1.0, {opacity: 0, delay: 23.5});
+  		TweenMax.to($(".subtitles-content-p7"), 1.0, {opacity: 1, delay: 24.0});
+  		TweenMax.to($(".subtitles-content-p7"), 1.0, {opacity: 0, delay: 27.0});
+  		TweenMax.to($(".subtitles-content-p8"), 1.0, {opacity: 1, delay: 27.5});
+  		TweenMax.to($(".subtitles-content-p8"), 1.0, {opacity: 0, delay: 30.5});
+  		TweenMax.to($(".subtitles-content-p9"), 1.0, {opacity: 1, delay: 31.0});
+  		TweenMax.to($(".subtitles-content-p9"), 1.0, {opacity: 0, delay: 34.0});
+  		TweenMax.to($(".subtitles-content-p10"), 1.0, {opacity: 1, delay: 34.5});
+  		TweenMax.to($(".subtitles-content-p10"), 1.0, {opacity: 0, delay: 37.5});
+  		TweenMax.to($(".subtitles-content-p11"), 1.0, {opacity: 1, delay: 38.0});
+  		TweenMax.to($(".subtitles-content-p11"), 1.0, {opacity: 0, delay: 41.0});
+  		TweenMax.to($(".subtitles-content-p12"), 1.0, {opacity: 1, delay: 41.5});
+  		TweenMax.to($(".subtitles-content-p12"), 1.0, {opacity: 0, delay: 44.5});
+  		TweenMax.to($(".subtitles-content-p13"), 1.0, {opacity: 1, delay: 45.0});
+  		TweenMax.to($(".subtitles-content-p13"), 1.0, {opacity: 0, delay: 48.0});
+  		TweenMax.to($(".subtitles-content-p14"), 1.0, {opacity: 1, delay: 48.5});
+  		TweenMax.to($(".subtitles-content-p14"), 1.0, {opacity: 0, delay: 51.5});
+  		TweenMax.to($(".subtitles-content-p15"), 1.0, {opacity: 1, delay: 54.5});
+  		
 	}
 
 	function hideLines() {

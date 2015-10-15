@@ -110,3 +110,29 @@ canvas { width: 100%; height: 100% }
     color: white;
 }
 
+.subtitles-content {
+    position: fixed;
+        bottom: 10%;
+    width: 100%;
+    text-align: center;
+
+}
+
+.subtitles-content p {
+    font-size: 1.5em;
+    font-family: 'Titillium Web', sans-serif;
+    font-weight: lighter;
+        color: white;
+    text-align: center;
+    display: absolute;
+    position: absolute;
+    display: block;
+    text-align: center;
+    width: 100%;
+    opacity: 0;
+
+}
+
+
+
+
